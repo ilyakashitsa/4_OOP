@@ -1,6 +1,4 @@
-import pytest
 from add_casses import Product, Category
-from builtins import ValueError
 
 
 def test_category_init():
