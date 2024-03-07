@@ -1,4 +1,5 @@
-from add_casses import Product, Category
+from product import Product
+from categories import Category
 
 
 def test_category_init():
@@ -45,7 +46,7 @@ def test_category_remove_product():
     assert category.total_unique_products == {'Смартфон', 'Телевизор'}
     category.remove_product(product1)
     assert category.total_unique_products == {'Телевизор'}
-    assert category.get_products()
+    assert category.products
 
 
 def test_product_create_duplicate():
@@ -54,6 +55,7 @@ def test_product_create_duplicate():
     product2 = Product("Смартфон", "Телефон", 15000, 3)
     product3 = Product("Планшет", "Планшет", 8000, 8)
     products_list.append(product1)
+    products_list.append(product2)
     assert Product.create_product("Смартфон", "Телефон", 15000, 3, products_list) == product1
     assert product1.get_price() == 15000
     assert product1.get_quantity() == 8
@@ -98,4 +100,4 @@ def test_category_get_products():
     category = Category("Электроника", "Вся электроника")
     product = Product("Смартфон", "Телефон", 10000, 5)
     category.add_product(product)
-    assert category.get_products() == [product]
+    assert category.products == [product]
