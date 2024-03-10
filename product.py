@@ -68,3 +68,16 @@ class Product:
 
         # Если товар не найден, создает новый
         return cls(name, description, price, quantity)
+
+    def __str__(self):
+        """
+        Возвращает строковое представление продукта.
+        """
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        """
+        Перегрузка оператора сложения для продуктов.
+        Результатом является сумма стоимостей продуктов, умноженных на их количество.
+        """
+        return (self.__price * self.quantity) + (other.__price * other.quantity)
