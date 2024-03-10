@@ -51,3 +51,15 @@ class Category:
             products_info.append(
                 f"{product.get_name()}, {product.get_price()} руб. Остаток: {product.get_quantity()} шт.")
         return products_info
+
+    def __len__(self):
+        """
+        Возвращает общее количество продуктов в категории.
+        """
+        return len(self.__products)
+
+    def __str__(self):
+        """
+        Возвращает строковое представление категории.
+        """
+        return f"{self.name}, количество продуктов: {len(self)} шт."

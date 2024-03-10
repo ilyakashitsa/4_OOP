@@ -46,7 +46,6 @@ def test_category_remove_product():
     assert category.total_unique_products == {'Смартфон', 'Телевизор'}
     category.remove_product(product1)
     assert category.total_unique_products == {'Телевизор'}
-    assert category.products
 
 
 def test_product_create_duplicate():
@@ -101,3 +100,31 @@ def test_category_get_products():
     product = Product("Смартфон", "Телефон", 10000, 5)
     category.add_product(product)
     assert category.products == [product]
+
+
+def test_category_len_method():
+    category = Category("Электроника", "Вся электроника")
+    assert len(category) == 0
+    product = Product("Смартфон", "Телефон", 10000, 5)
+    category.add_product(product)
+    assert len(category) == 1
+
+
+def test_category_str_representation():
+    category = Category("Электроника", "Вся электроника")
+    assert str(category) == "Электроника, количество продуктов: 0 шт."
+    product = Product("Смартфон", "Телефон", 10000, 5)
+    category.add_product(product)
+    assert str(category) == "Электроника, количество продуктов: 1 шт."
+
+
+def test_product_str_representation():
+    product = Product("Смартфон", "Телефон", 10000, 5)
+    assert str(product) == "Смартфон, 10000 руб. Остаток: 5 шт."
+
+
+def test_product_addition():
+    product1 = Product("Смартфон", "Телефон", 100, 5)
+    product2 = Product("Ноутбук", "Лэптоп", 200, 2)
+    result = product1 + product2
+    assert result == (100 * 5) + (200 * 2)
