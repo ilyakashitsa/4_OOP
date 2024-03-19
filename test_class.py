@@ -1,65 +1,8 @@
+import pytest
 from product import Product
 from categories import Category
-
-
-def test_category_init():
-    category = Category("Электроника", "Вся электроника")
-    product = Product("Смартфон", "Телефон", 10000, 5)
-    category.add_product(product)
-    assert category.name == "Электроника"
-    assert category.description == "Вся электроника"
-    assert category.total_categories == 1
-    assert category.total_unique_products == {"Смартфон"}
-
-
-def test_product_init():
-    product = Product("Смартфон", "Телефон", 10000, 5)
-    assert product.name == "Смартфон"
-    assert product.description == "Телефон"
-    assert product.quantity == 5
-    assert product.get_name() == 'Смартфон'
-    assert product.get_price() == 10000
-    assert product.get_quantity() == 5
-    assert product.get_description() == "Телефон"
-
-
-def test_category_add_product():
-    category = Category("Электроника", "Вся электроника")
-    product = Product("Смартфон", "Телефон", 10000, 5)
-    category.add_product(product)
-    assert category.total_unique_products == {'Смартфон'}
-
-
-def test_category_add_product_duplicate():
-    category = Category("Электроника", "Вся электроника")
-    product = Product("Смартфон", "Телефон", 10000, 5)
-    category.add_product(product)
-    assert category.description == "Вся электроника"
-
-
-def test_category_remove_product():
-    category = Category("Электроника", "Вся электроника")
-    product1 = Product("Смартфон", "Телефон", 10000, 5)
-    product2 = Product("Телевизор", "Плазменый", 20000, 4)
-    category.add_product(product1)
-    category.add_product(product2)
-    assert category.total_unique_products == {'Смартфон', 'Телевизор'}
-    category.remove_product(product1)
-    assert category.total_unique_products == {'Телевизор'}
-
-
-def test_product_create_duplicate():
-    products_list = []
-    product1 = Product("Смартфон", "Телефон", 10000, 5)
-    product2 = Product("Смартфон", "Телефон", 15000, 3)
-    product3 = Product("Планшет", "Планшет", 8000, 8)
-    products_list.append(product1)
-    products_list.append(product2)
-    assert Product.create_product("Смартфон", "Телефон", 15000, 3, products_list) == product1
-    assert product1.get_price() == 15000
-    assert product1.get_quantity() == 8
-    products_list.append(product3)
-    assert Product.create_product("Планшет", "Планшет", 8000, 8, products_list) == product3
+from Smartphone import Smartphone
+from LawnGrass import LawnGrass
 
 
 def test_product_price_setter():
@@ -68,31 +11,6 @@ def test_product_price_setter():
     assert product.get_price() == 12000
     product.set_price(0)
     assert product.get_price() == 12000
-
-
-def test_category_products_info():
-    category = Category("Электроника", "Вся электроника")
-    product1 = Product("Смартфон", "Телефон", 10000, 5)
-    product2 = Product("Телевизор", "Плазменый", 20000, 4)
-    category.add_product(product1)
-    category.add_product(product2)
-    expected_info = [
-        "Смартфон, 10000 руб. Остаток: 5 шт.",
-        "Телевизор, 20000 руб. Остаток: 4 шт."
-    ]
-    assert category.get_products_info() == expected_info
-
-
-def test_create_product_new():
-    products_list = []
-    product1 = Product("Смартфон", "Телефон", 10000, 5)
-    products_list.append(product1)
-    new_product = Product.create_product("Планшет", "Планшет", 8000, 8, products_list)
-    assert isinstance(new_product, Product)
-    assert new_product.name == "Планшет"
-    assert new_product.description == "Планшет"
-    assert new_product.get_price() == 8000
-    assert new_product.get_quantity() == 8
 
 
 def test_category_get_products():
@@ -128,3 +46,154 @@ def test_product_addition():
     product2 = Product("Ноутбук", "Лэптоп", 200, 2)
     result = product1 + product2
     assert result == (100 * 5) + (200 * 2)
+
+
+def test_product_create_product():
+    products_list = []
+    product1 = Product("Смартфон", "Телефон", 10000, 5)
+    products_list.append(product1)
+    new_product = Product.create_product("Смартфон", "Телефон", 15000, 3, products_list)
+    assert new_product is product1
+    assert product1.get_price() == 15000
+    assert product1.get_quantity() == 8
+
+
+def test_add_same_product_class():
+    product1 = Product("Test Product 1", "Описание", 10.0, 5)
+    product2 = Product("Test Product 2", "Описание", 20.0, 10)
+    result = product1 + product2
+    assert result == (10.0 * 5) + (20.0 * 10)
+
+
+def test_add_different_product_class():
+    product = Product("Test Product", "Описание", 10.0, 5)
+    smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая", "Модель", 128, "Черный")
+    with pytest.raises(TypeError):
+        result = product + smartphone
+
+
+def test_add_non_product_class():
+    product = Product("Test Product", "Описание", 10.0, 5)
+    non_product = "Это не продукт"
+    with pytest.raises(TypeError):
+        result = product + non_product
+
+
+def test_category_init():
+    category = Category("Электроника", "Вся электроника")
+    product = Product("Смартфон", "Телефон", 10000, 5)
+    category.add_product(product)
+    assert category.name == "Электроника"
+    assert category.description == "Вся электроника"
+    assert category.total_categories == 4
+    assert category.total_unique_products == {"Смартфон"}
+
+
+def test_product_init():
+    product = Product("Смартфон", "Телефон", 10000, 5)
+    assert product.name == "Смартфон"
+    assert product.description == "Телефон"
+    assert product.quantity == 5
+    assert product.get_name() == 'Смартфон'
+    assert product.get_price() == 10000
+    assert product.get_quantity() == 5
+    assert product.get_description() == "Телефон"
+
+
+def test_category_add_product():
+    category = Category("Электроника", "Вся электроника")
+    product = Product("Смартфон", "Телефон", 10000, 5)
+    category.add_product(product)
+    assert category.total_unique_products == {'Смартфон'}
+    assert category.description == "Вся электроника"
+
+
+def test_category_remove_product():
+    category = Category("Электроника", "Вся электроника")
+    product1 = Product("Смартфон", "Телефон", 10000, 5)
+    product2 = Product("Телевизор", "Плазменый", 20000, 4)
+    category.add_product(product1)
+    category.add_product(product2)
+    assert category.total_unique_products == {'Смартфон', 'Телевизор'}
+    category.remove_product(product1)
+    assert category.total_unique_products == {'Телевизор'}
+
+
+def test_category_products_info():
+    category = Category("Электроника", "Вся электроника")
+    product1 = Product("Смартфон", "Телефон", 10000, 5)
+    product2 = Product("Телевизор", "Плазменый", 20000, 4)
+    category.add_product(product1)
+    category.add_product(product2)
+    expected_info = [
+        "Смартфон, 10000 руб. Остаток: 5 шт.",
+        "Телевизор, 20000 руб. Остаток: 4 шт."
+    ]
+    assert category.get_products_info() == expected_info
+
+
+def test_create_product():
+    products_list = []
+    product1 = Product("Смартфон", "Телефон", 10000, 5)
+    products_list.append(product1)
+    new_product = Product.create_product("Планшет", "Планшет", 8000, 8, products_list)
+    assert isinstance(new_product, Product)
+    assert new_product.name == "Планшет"
+    assert new_product.description == "Планшет"
+    assert new_product.get_price() == 8000
+    assert new_product.get_quantity() == 8
+
+
+def test_smartphone():
+    smartphone = Smartphone("iPhone 13", "Смартфон от Apple", 999.99, 10, "Высокая", "iPhone 13", 128, "Серый")
+    assert smartphone.name == "iPhone 13"
+    assert smartphone.description == "Смартфон от Apple"
+    assert smartphone.get_price() == 999.99
+    assert smartphone.quantity == 10
+    assert smartphone.capacity == "Высокая"
+    assert smartphone.model == "iPhone 13"
+    assert smartphone.internal_memory == 128
+    assert smartphone.color == "Серый"
+    expected_string = "iPhone 13, 999.99 руб. Остаток: 10 шт. Характеристики: Высокая, iPhone 13, 128GB, Серый"
+    assert str(smartphone) == expected_string
+
+
+def test_lawn_grass():
+    lawn_grass = LawnGrass("Газонная трава", "Трава для газона", 5.99, 100, "Россия", "2-3 недели", "Зеленый")
+    assert lawn_grass.name == "Газонная трава"
+    assert lawn_grass.description == "Трава для газона"
+    assert lawn_grass.get_price() == 5.99
+    assert lawn_grass.quantity == 100
+    assert lawn_grass.country_of_origin == "Россия"
+    assert lawn_grass.germination_period == "2-3 недели"
+    assert lawn_grass.color == "Зеленый"
+    expected_string = "Газонная трава, 5.99 руб. Остаток: 100 шт. Характеристики: Россия, 2-3 недели, Зеленый"
+    assert str(lawn_grass) == expected_string
+
+
+def test_addition():
+    product1 = Product("Test Product 1", "Описание", 10.0, 5)
+    product2 = Product("Test Product 2", "Описание", 20.0, 10)
+    result = product1 + product2
+    assert result == (10.0 * 5) + (20.0 * 10)
+
+
+def test_add_invalid():
+    product = Product("Test Product", "Описание", 10.0, 5)
+    smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая", "Модель", 128, "Черный")
+    with pytest.raises(TypeError):
+        result = product + smartphone
+
+
+def test_add_product_valid():
+    category = Category("Test Category", "Описание")
+    product = Product("Test Product", "Описание", 10.0, 5)
+    category.add_product(product)
+    assert product in category.products
+
+
+def test_add_product_invalid():
+    category = Category("Test Category", "Описание")
+    non_product = "Это не продукт"
+    with pytest.raises(TypeError):
+        category.add_product(non_product)

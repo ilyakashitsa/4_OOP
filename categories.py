@@ -20,10 +20,15 @@ class Category:
         self.__products = []  # список продуктов в категории
         Category.total_categories += 1
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
         """
         Добавляет продукт в категорию.
+
+        Проверяет, является ли объект экземпляром класса Product или его подкласса.
+        Если объект не является продуктом, вызывается исключение TypeError.
         """
+        if not isinstance(product, Product):
+            raise TypeError("В категорию можно добавлять только экземпляры продукта или его подклассов.")
         self.__products.append(product)
         Category.total_unique_products.add(product.name)
 

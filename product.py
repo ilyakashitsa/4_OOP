@@ -52,7 +52,6 @@ class Product:
         """
         return self.description
 
-
     @classmethod
     def create_product(cls, name: str, description: str, price: float, quantity: int, products_list: list):
         """
@@ -78,6 +77,17 @@ class Product:
     def __add__(self, other):
         """
         Перегрузка оператора сложения для продуктов.
+
         Результатом является сумма стоимостей продуктов, умноженных на их количество.
+
+        Проверяет типы объектов:
+        - Если объект other не является экземпляром класса Product или его подклассов, вызывается исключение TypeError.
+        - Если объекты принадлежат к разным подклассам, вызывается исключение TypeError.
+
+        Возвращает сумму стоимостей продуктов, умноженных на их количество.
         """
+        if not isinstance(other, Product):
+            raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'".format(type(self).__name__, type(other).__name__))
+        elif type(self) is not type(other):
+            raise TypeError("Unsupported operand type(s) for +: '{}' and '{}'".format(type(self).__name__, type(other).__name__))
         return (self.__price * self.quantity) + (other.__price * other.quantity)
