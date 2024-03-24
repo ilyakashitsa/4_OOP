@@ -36,12 +36,14 @@ class Category:
 
     def remove_product(self, product: Product):
         """
-        Удаляет продукт из категории.
+        Удаляет продукт из категории, если он присутствует в списке продуктов.
         """
-        self.__products.remove(product)
-        if product.name in Category.total_unique_products:
-            Category.total_unique_products.remove(product.name)
-
+        if product in self.__products:
+            self.__products.remove(product)
+            if product.name in Category.total_unique_products:
+                Category.total_unique_products.remove(product.name)
+        else:
+            raise ValueError("Такого продукта нет в категории.")
     @property
     def products(self):
         """

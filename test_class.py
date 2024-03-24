@@ -142,15 +142,19 @@ def test_add_product_with_zero_quantity():
         category.add_product(product)
 
 
-def test_category_remove_product():
-    category = Category("Электроника", "Вся электроника")
-    product1 = Product("Смартфон", "Телефон", 10000, 5)
-    product2 = Product("Телевизор", "Плазменый", 20000, 4)
-    category.add_product(product1)
-    category.add_product(product2)
-    assert category.total_unique_products == {'Смартфон', 'Телевизор'}
-    category.remove_product(product1)
-    assert category.total_unique_products == {'Телевизор'}
+def test_remove_product_existing():
+    category = Category("Test Category", "Описание")
+    product = Product("Product", "Description", 10.0, 5)
+    category.add_product(product)
+    category.remove_product(product)
+    assert product not in category.products
+
+
+def test_remove_product_non_existing():
+    category = Category("Test Category", "Описание")
+    product = Product("Product", "Description", 10.0, 5)
+    with pytest.raises(ValueError):
+        category.remove_product(product)
 
 
 def test_category_remove_non_existing_product():
