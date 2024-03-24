@@ -83,7 +83,8 @@ def test_add_same_product_class():
 
 def test_add_different_product_class():
     product = Product("Test Product", "Описание", 10.0, 5)
-    smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая", "Модель", 128, "Черный")
+    smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая",
+                            "Модель", 128, "Черный")
     with pytest.raises(TypeError):
         result = product + smartphone
 
@@ -134,6 +135,13 @@ def test_category_add_product():
     assert category.description == "Вся электроника"
 
 
+def test_add_product_with_zero_quantity():
+    category = Category("Test Category", "Описание")
+    product = Product("Test Product", "Описание", 10.0, 0)
+    with pytest.raises(ValueError):
+        category.add_product(product)
+
+
 def test_category_remove_product():
     category = Category("Электроника", "Вся электроника")
     product1 = Product("Смартфон", "Телефон", 10000, 5)
@@ -178,7 +186,8 @@ def test_create_product():
 
 
 def test_smartphone():
-    smartphone = Smartphone("iPhone 13", "Смартфон от Apple", 999.99, 10, "Высокая", "iPhone 13", 128, "Серый")
+    smartphone = Smartphone("iPhone 13", "Смартфон от Apple", 999.99, 10,
+                            "Высокая", "iPhone 13", 128, "Серый")
     assert smartphone.name == "iPhone 13"
     assert smartphone.description == "Смартфон от Apple"
     assert smartphone.get_price() == 999.99
@@ -192,12 +201,14 @@ def test_smartphone():
 
 
 def test_smartphone_additional_info():
-    smartphone = Smartphone("iPhone 13", "Смартфон от Apple", 999.99, 10, "Высокая", "iPhone 13", 128, "Серый")
+    smartphone = Smartphone("iPhone 13", "Смартфон от Apple", 999.99, 10,
+                            "Высокая", "iPhone 13", 128, "Серый")
     assert smartphone.get_additional_info() == "Характеристики: Высокая, iPhone 13, 128GB, Серый"
 
 
 def test_lawn_grass():
-    lawn_grass = LawnGrass("Газонная трава", "Трава для газона", 5.99, 100, "Россия", "2-3 недели", "Зеленый")
+    lawn_grass = LawnGrass("Газонная трава", "Трава для газона", 5.99, 100,
+                           "Россия", "2-3 недели", "Зеленый")
     assert lawn_grass.name == "Газонная трава"
     assert lawn_grass.description == "Трава для газона"
     assert lawn_grass.get_price() == 5.99
@@ -210,7 +221,8 @@ def test_lawn_grass():
 
 
 def test_lawn_grass_additional_info():
-    lawn_grass = LawnGrass("Газонная трава", "Трава для газона", 5.99, 100, "Россия", "2-3 недели", "Зеленый")
+    lawn_grass = LawnGrass("Газонная трава", "Трава для газона", 5.99, 100,
+                           "Россия", "2-3 недели", "Зеленый")
     assert lawn_grass.get_additional_info() == "Характеристики: Россия, 2-3 недели, Зеленый"
 
 
@@ -223,7 +235,8 @@ def test_addition():
 
 def test_add_invalid():
     product = Product("Test Product", "Описание", 10.0, 5)
-    smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая", "Модель", 128, "Черный")
+    smartphone = Smartphone("iPhone 14", "Описание",
+                            500.0, 1, "Высокая", "Модель", 128, "Черный")
     with pytest.raises(TypeError):
         result = product + smartphone
 
@@ -247,3 +260,17 @@ def test_add_product_invalid():
     non_product = "Это не продукт"
     with pytest.raises(TypeError):
         category.add_product(non_product)
+
+
+def test_calculate_average_price_with_no_products():
+    category = Category("Test Category", "Описание")
+    assert category.calculate_average_price() == 0
+
+
+def test_calculate_average_price_with_products():
+    category = Category("Test Category", "Описание")
+    product1 = Product("Product 1", "Description", 10.0, 5)
+    product2 = Product("Product 2", "Description", 20.0, 10)
+    category.add_product(product1)
+    category.add_product(product2)
+    assert category.calculate_average_price() == pytest.approx((10.0 + 20.0) / 2, abs=1e-2)
