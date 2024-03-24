@@ -29,6 +29,8 @@ class Category:
         """
         if not isinstance(product, Product):
             raise TypeError("В категорию можно добавлять только экземпляры продукта или его подклассов.")
+        if product.get_quantity() == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
         self.__products.append(product)
         Category.total_unique_products.add(product.name)
 
@@ -68,3 +70,16 @@ class Category:
         Возвращает строковое представление категории.
         """
         return f"{self.name}, количество продуктов: {len(self)} шт."
+
+    def calculate_average_price(self):
+        """
+        Рассчитывает средний ценник всех товаров в категории.
+
+        Возвращает средний ценник или 0, если в категории нет товаров.
+        """
+        total_price = sum(product.get_price() for product in self.__products)
+        try:
+            average_price = total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0
+        return average_price
