@@ -1,8 +1,8 @@
 import pytest
-from product import Product
-from categories import Category
-from smartphone import Smartphone
-from lawn_grass import LawnGrass
+from src.product import Product
+from src.categories import Category
+from src.smartphone import Smartphone
+from src.lawn_grass import LawnGrass
 
 
 def test_product_price_setter():

@@ -1,6 +1,6 @@
-from product import Product
-from abstract_product import AbstractProduct
-from creation_logger_mixin import ObjectCreationLoggerMixin
+from src.product import Product
+from src.abstract_product import AbstractProduct
+from src.creation_logger_mixin import ObjectCreationLoggerMixin
 
 
 class Smartphone(Product, AbstractProduct, ObjectCreationLoggerMixin):
