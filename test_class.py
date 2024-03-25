@@ -85,7 +85,7 @@ def test_add_different_product_class():
     product = Product("Test Product", "Описание", 10.0, 5)
     smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая", "Модель", 128, "Черный")
     with pytest.raises(TypeError):
-        result = product + smartphone
+        product + smartphone
 
 
 def test_add_product_empty_list():
@@ -102,7 +102,7 @@ def test_add_non_product_class():
     product = Product("Test Product", "Описание", 10.0, 5)
     non_product = "Это не продукт"
     with pytest.raises(TypeError):
-        result = product + non_product
+        product + non_product
 
 
 def test_category_init():
@@ -225,7 +225,7 @@ def test_add_invalid():
     product = Product("Test Product", "Описание", 10.0, 5)
     smartphone = Smartphone("iPhone 14", "Описание", 500.0, 1, "Высокая", "Модель", 128, "Черный")
     with pytest.raises(TypeError):
-        result = product + smartphone
+        product + smartphone
 
 
 def test_add_invalid_non_product():
