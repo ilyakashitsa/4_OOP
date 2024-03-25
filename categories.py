@@ -44,6 +44,7 @@ class Category:
                 Category.total_unique_products.remove(product.name)
         else:
             raise ValueError("Такого продукта нет в категории.")
+
     @property
     def products(self):
         """
