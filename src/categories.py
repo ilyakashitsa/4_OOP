@@ -7,6 +7,7 @@ class Category:
     """
     total_categories = 0  # общее количество категорий
     total_unique_products = set()  # общее количество уникальных продуктов
+    total_unique_products_counter = 0  # счетчик уникальных продуктов
 
     def __init__(self, name: str, description: str):
         """
@@ -33,6 +34,7 @@ class Category:
             raise ValueError("Товар с нулевым количеством не может быть добавлен.")
         self.__products.append(product)
         Category.total_unique_products.add(product.name)
+        Category.total_unique_products_counter += 1
 
     def remove_product(self, product: Product):
         """
@@ -41,6 +43,7 @@ class Category:
         self.__products.remove(product)
         if product.name in Category.total_unique_products:
             Category.total_unique_products.remove(product.name)
+            Category.total_unique_products_counter -= 1
 
     @property
     def products(self):
